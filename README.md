@@ -1,3 +1,3 @@
-# Leecode Solved Problems
+# Leetcode Solved Problems
 <br>
 -Pratiksha Gusain
