@@ -6,13 +6,13 @@ class Solution {
         int minSize= Integer.MAX_VALUE;
         while(j<nums.length){
             sum+=nums[j];
-            j++; 
             while(sum>=target){
-                int size= j-i;
+                int size= j-i+1;
                 minSize= Math.min(size,minSize);
                 sum-=nums[i];
                 i++;
             }
+            j++;
         }
         return minSize==Integer.MAX_VALUE?0:minSize;
     }
