@@ -2,7 +2,9 @@ class Solution {
     public int myAtoi(String s) {
         s=s.trim();
         long num=0;
-        if(s.isEmpty()) return 0;
+        if(s.isEmpty()){
+            return 0;
+        } 
         int i=0;
         int sign=1;
         if(s.charAt(i)=='-' || s.charAt(i)=='+'){
