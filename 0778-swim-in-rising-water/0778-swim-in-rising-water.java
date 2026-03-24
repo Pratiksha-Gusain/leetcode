@@ -1,32 +1,23 @@
 class Solution {
     public int swimInWater(int[][] grid) {
         int n = grid.length;
-        int low=grid[0][0];
-        int high =0;
-        for (int[] row : grid){
-            for (int val : row)
-                high = Math.max(high, val);
-        }
-        while(low<high){
-            int mid= low+(high-low)/2;
-            int[][] vis = new int[n][n];
-            if(dfs(grid,n,mid,0,0,vis)) high = mid;
-            else low=mid+1;
-        }
-        return low;
-    } 
-    boolean dfs(int[][] grid,int n, int mid,int i, int j, int[][] vis){
-        if(i==n-1 && j==n-1) return true;
-        vis[i][j]=1;
-        int[][] dir = {{0,1},{1,0},{0,-1},{-1,0}};
-        for(int[] d : dir){
-            int nr = i+d[0];
-            int nc = j+d[1];
-            if(nr>=0 && nr<n && nc>=0 && nc<n && vis[nr][nc]==0 && grid[i][j]<=mid && grid[nr][nc]<=mid){
-               if(dfs(grid,n,mid,nr,nc,vis)) return true;
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        boolean[][] visited = new boolean[n][n];
+         minHeap.add(new int[]{grid[0][0], 0, 0});
+        visited[0][0] = true;
+        int[][] dirs = {{0,1},{1,0},{0,-1},{-1,0}};
+        while (!minHeap.isEmpty()) {
+            int[] curr = minHeap.poll();
+            int elevation = curr[0], r = curr[1], c = curr[2];
+            if (r == n - 1 && c == n - 1) return elevation;
+            for (int[] d : dirs) {
+                int nr = r + d[0], nc = c + d[1];
+                if (nr >= 0 && nc >= 0 && nr < n && nc < n && !visited[nr][nc]) {
+                    visited[nr][nc] = true;
+                    minHeap.add(new int[]{Math.max(elevation, grid[nr][nc]), nr, nc});
+                }
             }
         }
-        return false;
-
+        return -1;
     }
 }
