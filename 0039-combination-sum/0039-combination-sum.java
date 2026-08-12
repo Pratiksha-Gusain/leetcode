@@ -1,9 +1,11 @@
 class Solution {
     public void solve(int[] candidates, int i, int n, int target, List<List<Integer>> ans, List<Integer>temp){
-        if(i == n){
-            if( target == 0){
-                ans.add(new ArrayList<>(temp));
-            }
+        if (target == 0) {
+            ans.add(new ArrayList<>(temp));
+            return;
+        }
+
+        if (i == n) {
             return;
         }
         
