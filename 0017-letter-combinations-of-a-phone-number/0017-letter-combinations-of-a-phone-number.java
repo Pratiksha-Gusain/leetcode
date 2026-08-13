@@ -15,15 +15,20 @@ class Solution {
         return res;
     }
     public void solve(String digits,int i,StringBuilder comb,List<String> res, Map<Character,String>map){
-        if(i==digits.length()){
+        if(i == digits.length()){
             res.add(comb.toString());
             return;
         }
-        String letters= map.get(digits.charAt(i));
-        for(char letter:letters.toCharArray()){
-            comb.append(letter);
-            solve(digits,i+1,comb,res,map);
-            comb.deleteCharAt(comb.length()-1);
-        }
+        
+            String letters = map.get(digits.charAt(i));
+            for(char letter : letters.toCharArray()){
+                comb.append(letter);
+                solve(digits,i+1,comb,res,map);
+                comb.deleteCharAt(comb.length()-1);
+            }
+            
+        
+
+       
     }
 }
