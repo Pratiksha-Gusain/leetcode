@@ -20,14 +20,14 @@ class Solution {
         vis[0][0]=true;
         while(!q.isEmpty()){
             Pair curr = q.poll();
-            if(curr.i==n-1 && curr.j==m-1) return curr.step;
-            for(int d[]: dir){
-                int row =curr.i+d[0];
-                int col=curr.j+d[1];
-                if(row>=0 && col>=0 && row<n &&col<m && !vis[row][col]){
-                    vis[row][col]=true;
-                    if(grid[row][col]==0){
-                        q.offer(new Pair(row,col,curr.step+1));
+            if(curr.i == n-1 && curr.j == n-1) return curr.step;
+            for(int[] d : dir){
+                int row = curr.i + d[0];
+                int col = curr.j + d[1];
+                if(row >= 0 && col >=0 && row < n && col < n && !vis[row][col]){
+                    vis[row][col] = true;
+                    if(grid[row][col] == 0){
+                        q.offer(new Pair(row, col, curr.step +1));
                     }
                 }
             }
