@@ -22,10 +22,9 @@ class Solution {
             adj.get(row[0]).add(row[1]);
         int[] vis = new int[numCourses];
         int pathVis[] = new int[numCourses];
-        for(int i=0;i<numCourses;i++){
-            if(vis[i]==0){
-                if(dfs(i,adj,vis,pathVis)==true) return false;
-            }
+        for(int i = 0; i < numCourses; i++){
+            if(vis[i]==0)
+            if(dfs(i,adj,vis,pathVis)) return false;
         }
         return true;
     }
