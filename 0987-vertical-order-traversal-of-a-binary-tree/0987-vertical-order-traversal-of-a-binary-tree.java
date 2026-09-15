@@ -13,31 +13,47 @@
  *     }
  * }
  */
+ class Pair {
+    TreeNode node;
+    int hd;
+
+    Pair(TreeNode node, int hd) {
+        this.node = node;
+        this.hd = hd;
+    }
+ }
 class Solution {
     public List<List<Integer>> verticalTraversal(TreeNode root) {
-        List<int[]> nodes = new ArrayList<>();
-        dfs(root,0,0,nodes);
-        nodes.sort((a,b)->{
-            if(a[0]!=b[0]) return Integer.compare(a[0],b[0]);
-            if(a[1]!=b[1]) return Integer.compare(a[1],b[1]);
-            return Integer.compare(a[2],b[2]);
-        });
-        List<List<Integer>> res = new ArrayList<>();
-        int prevCol=Integer.MIN_VALUE;
-        for(int[] node:nodes){
-            int col=node[0],val=node[2];
-            if(col!=prevCol){
-                res.add(new ArrayList<>());
-                prevCol=col;
+        TreeMap<Integer, ArrayList<Integer>> map = new TreeMap<>();
+        Queue<Pair> q = new LinkedList<>();
+        q.add(new Pair(root, 0));
+
+        while (!q.isEmpty()) {
+            int size = q.size();
+            TreeMap<Integer, ArrayList<Integer>> levelMap =new TreeMap<>();
+            for (int i = 0; i < size; i++) {
+                Pair cur = q.poll();
+                int hd = cur.hd;
+                int value = cur.node.val;
+
+                levelMap.computeIfAbsent(hd, k -> new ArrayList<>())
+                    .add(value);
+                if (cur.node.left != null) {
+                    q.add(new Pair(cur.node.left, hd - 1));
+                }
+                if (cur.node.right != null) {
+                    q.add(new Pair(cur.node.right, hd + 1));
+                }
             }
-            res.get(res.size()-1).add(val);
+            for (Map.Entry<Integer, ArrayList<Integer>> entry : levelMap.entrySet()) {
+                int hd = entry.getKey();
+                ArrayList<Integer> values = entry.getValue();
+                Collections.sort(values);
+                map.computeIfAbsent(hd, k -> new ArrayList<>())
+                   .addAll(values);
+            }
         }
-        return res;
-    }
-    public void dfs(TreeNode node, int row, int col, List<int[]> nodes){
-        if(node==null) return;
-        nodes.add(new int[] {col,row,node.val});
-        dfs(node.left,row+1,col-1,nodes);
-        dfs(node.right,row+1,col+1,nodes);
+        return new ArrayList<>(map.values());
+
     }
 }
