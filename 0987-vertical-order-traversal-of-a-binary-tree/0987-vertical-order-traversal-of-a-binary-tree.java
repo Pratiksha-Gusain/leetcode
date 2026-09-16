@@ -13,47 +13,59 @@
  *     }
  * }
  */
- class Pair {
+ class Tuple {
+    int col;
+    int row;
     TreeNode node;
-    int hd;
+    
 
-    Pair(TreeNode node, int hd) {
+    Tuple(int col, int row, TreeNode node) {
         this.node = node;
-        this.hd = hd;
+        this.row = row;
+        this.col = col;
     }
  }
 class Solution {
     public List<List<Integer>> verticalTraversal(TreeNode root) {
-        TreeMap<Integer, ArrayList<Integer>> map = new TreeMap<>();
-        Queue<Pair> q = new LinkedList<>();
-        q.add(new Pair(root, 0));
+        List<List<Integer>> ans = new ArrayList<>();
+        TreeMap<Integer, ArrayList<int[]>> map = new TreeMap<>();
+        Queue<Tuple> q = new LinkedList<>();
+        q.add(new Tuple(0, 0, root));
 
-        while (!q.isEmpty()) {
-            int size = q.size();
-            TreeMap<Integer, ArrayList<Integer>> levelMap =new TreeMap<>();
-            for (int i = 0; i < size; i++) {
-                Pair cur = q.poll();
-                int hd = cur.hd;
-                int value = cur.node.val;
+        while(!q.isEmpty()){
+            Tuple curr = q.poll();
 
-                levelMap.computeIfAbsent(hd, k -> new ArrayList<>())
-                    .add(value);
-                if (cur.node.left != null) {
-                    q.add(new Pair(cur.node.left, hd - 1));
-                }
-                if (cur.node.right != null) {
-                    q.add(new Pair(cur.node.right, hd + 1));
-                }
+            if(!map.containsKey(curr.col)){
+                map.put(curr.col, new ArrayList<>());
             }
-            for (Map.Entry<Integer, ArrayList<Integer>> entry : levelMap.entrySet()) {
-                int hd = entry.getKey();
-                ArrayList<Integer> values = entry.getValue();
-                Collections.sort(values);
-                map.computeIfAbsent(hd, k -> new ArrayList<>())
-                   .addAll(values);
+            map.get(curr.col).add(new int[]{curr.row, curr.node.val});
+
+            if(curr.node.left != null){
+                q.add(new Tuple(curr.col-1, curr.row+1, curr.node.left));
             }
+            if(curr.node.right != null){
+                q.add(new Tuple(curr.col+1, curr.row+1, curr.node.right));
+            }
+
         }
-        return new ArrayList<>(map.values());
+        for(List<int[]> list : map.values()){
+            Collections.sort(list, (a,b)->{
+                if(a[0] != b[0]){
+                    return a[0]-b[0];
+                }
+                else{
+                    return a[1]-b[1];
+                }
+            });
+            List<Integer> colList = new ArrayList<>();
+            for(int[] info : list){
+                colList.add(info[1]);
+            }
+            ans.add(colList);
+        }
+        return ans;
+
+
 
     }
 }
