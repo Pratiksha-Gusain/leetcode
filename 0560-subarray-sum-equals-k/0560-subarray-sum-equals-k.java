@@ -6,10 +6,9 @@ class Solution {
         hm.put(0,1);
         for(int i = 0; i < nums.length; i++){
             curr += nums[i];
-            if(hm.containsKey(curr-k)){
-                res += hm.get(curr-k);
-            }
+            res += hm.getOrDefault(curr-k,0);
             hm.put(curr, hm.getOrDefault(curr, 0)+1);
+            
         }
         return res;
     }
